@@ -8,26 +8,18 @@ import java.io.OutputStreamWriter;
 
 class Rohs {
     public static void main(String[] args) throws IOException, InterruptedException {
-        // https://stackoverflow.com/questions/1401002/trick-an-application-into-thinking-its-stdin-is-interactive-not-a-pipe
-        //
-        // Using script or unbuffer is the important catch. Without this
-        // step you cannot use stdin in Python interactively, even with
-        // python -u. At least script comes with Linux/Mac OS X, but
-        // unbuffer works fine too.
         ProcessBuilder pb;
         switch(System.getProperty("os.name")) {
             case "Mac OS X":
                 pb = new ProcessBuilder(
-                    "/usr/bin/script", "-q", "/dev/null", "/usr/bin/python");
+                    "/usr/bin/script", "-q", "/dev/null", "python");
                 break;
             default:
                 // Linux
                 pb = new ProcessBuilder(
-                    "/usr/bin/script", "-qfc", "/usr/bin/python", "/dev/null");
+                    "/usr/bin/script", "-qfc", "python -i init.py", "/dev/null");
 
         }
-        // This doesn't make a difference.
-        // pb.redirectErrorStream(true);
 
         Process p = pb.start();
 
@@ -45,9 +37,15 @@ class Rohs {
                     OutputStream os = p.getOutputStream();
                     OutputStreamWriter osw = new OutputStreamWriter(os);
                     BufferedWriter bw = new BufferedWriter(osw);
-                    bw.write("2+2");
+                    bw.write("im = Image.open(\"input.jpg\")");
                     bw.newLine();
-                    bw.write("quit()");
+                    bw.write("a = rescale(im)");
+                    bw.newLine();
+                    bw.write("a = Variable(a)");
+                    bw.newLine();
+                    bw.write("a = netG(a.view(-1, 3, 128, 128))");
+                    bw.newLine();
+                    bw.write("vutils.save_image(a.data, 'result.png', normalize=True)");
                     bw.newLine();
                     bw.flush();
                     bw.close();
