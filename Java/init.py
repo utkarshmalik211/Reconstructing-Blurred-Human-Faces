@@ -96,8 +96,8 @@ scale = transforms.Compose([
 convert_pil = transforms.Compose([transforms.ToPILImage(),])
 
 my_file1 = Path("./netG.pth")
-# if my_file1.is_file():
-#     netG.load_state_dict(torch.load('netG.pth', map_location=lambda storage, loc:storage))
+if my_file1.is_file():
+    netG.load_state_dict(torch.load('netG.pth', map_location=lambda storage, loc:storage))
 
 rescale = transforms.Compose([
                             transforms.Resize(128),
