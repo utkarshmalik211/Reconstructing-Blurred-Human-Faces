@@ -1,0 +1,2 @@
+# Reconstructing-Blurred-Human-Faces
+In photographic media, faces are often obfuscated to protect the identity of those pictured. This obfuscation process is done by removing details from the photograph in order to reduce the identifying facial features. However, these obfuscated images may still contain enough details such that the original features may be able to be recovered. In this project we will examine different neural networks to reconstruct obfuscated images of human faces.
